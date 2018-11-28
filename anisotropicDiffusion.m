@@ -1,6 +1,13 @@
 function new_I = anisotropicDiffusion(I,itr,lambda,K)
-%ANISOTROPICDIFFUSION Summary of this function goes here
-%   Detailed explanation goes here
+%ANISOTROPICDIFFUSION Performs anisotropic diffusion on image.
+%   Inputs:
+%       I       Image
+%       itr    	Number of iterations
+%       lambda  Learning rate
+%       K    	Threshold value
+%   Outputs:
+%       newI    Anisotropically diffused image
+
     [~,~,ch] = size(I);
     if (ch == 1)
         % Grayscale image
@@ -21,6 +28,14 @@ function new_I = anisotropicDiffusion(I,itr,lambda,K)
     end
 end
 
+% DIFFUSEIIM Performs anisotropic diffusion on one channel.
+%   Inputs:
+%       I       Image containing only one channel
+%       itr    	Number of iterations
+%       lambda  Learning rate
+%       K    	Threshold value
+%   Outputs:
+%       smooth_I    Anisotropically diffused image
 function smooth_I = diffuseIm(I,itr,lambda,K)
     im = I;
     for i = 1:itr
@@ -58,10 +73,15 @@ function smooth_I = diffuseIm(I,itr,lambda,K)
         im = im + lambda*(c_N.*I_N + c_S.*I_S + c_W.*I_W + c_E.*I_E...
             + c_NE.*I_NE + c_SE.*I_SE + c_NW.*I_NW + c_SW.*I_SW);    
     end
-    smooth_I = uint8(im);    
+    smooth_I = im;    
 end
 
-% Finds diffusion constant for given image
-function c = diffusionConstant(I,K)
-    c = 1./(1+(I./K).^2);
+% DIFFUSIONCONSTANT Calculates diffusion constant
+%   Inputs:
+%       del_I   Gradient of image
+%       K       Threshold value
+%   Outputs:
+%       c     	Diffusion constant
+function c = diffusionConstant(del_I,K)
+    c = 1./(1+(del_I./K).^2);
 end
