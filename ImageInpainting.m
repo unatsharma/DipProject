@@ -104,7 +104,10 @@ end
 %       deL
 function deL=deLp(x,y,im)
 
-    [a,b,c,d] = nInt(x,y,im);
+    if x-1>=1,           a=Lp(x-1,y,im); else, a=0;end
+    if x+1<=size(im,1),  b=Lp(x+1,y,im); else, b=0;end
+    if y-1>=1,           c=Lp(x,y-1,im); else, c=0;end
+    if y+1<=size(im,2),  d=Lp(x,y+1,im); else, d=0;end
     
     deL=([b-a,d-c]);    
     
